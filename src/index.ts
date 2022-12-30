@@ -98,3 +98,145 @@ const multiplyResult = multiply(5,2);
 console.log({multiplyResult});
 
 /** ======= Object ======= */
+
+const getUser = (): void => {
+  let user = {
+    name: "Alwi", 
+    age: 20
+  }
+
+  /**
+   * error 
+  user = {
+    address: "kendal"
+  }  
+   */
+  console.log(user);
+}
+
+// slightly better
+
+type Animal = {
+  name: string, 
+  legs: number
+}
+
+const duck: Animal = {
+  name: "donald",
+  legs: 4
+}
+
+/** ======= Union ======= */
+/**
+ * - Union type allows us to use more than one data type
+ * - syntax: (number | string | ... | typeN)
+ */
+
+let phoneNumber: (string | number) = "08123433";
+phoneNumber = 6231234;
+// phoneNumber = false; // error: boolean are not assignable to string | number
+
+/** ======= Function Default Parameter ======= */
+
+const printFullname = (firstName: string, lastName: string = "Ganteng"): string => {
+  return `${firstName} ${lastName}`;
+}
+
+console.log({printFullname: printFullname("Otong")});
+console.log({printFullname: printFullname("Ucok", "Baba")});
+
+/** ======= Function Nullable Parameter ======= */
+const nullable = (param1: string, param2?: string): string => {
+  return `${param1} ${param2}`;
+}
+
+console.log({nullabel: nullable("Alwi")});
+console.log({nullabel: nullable("Alwi", "GG Gaming")});
+
+/** ======= Class ======= */
+/**
+ * constructor(protected email: string)
+ * is equal to
+ * protected email: string;
+ * constructor(email: string) {
+ * this.email = email
+ * }
+ */
+
+class User {
+
+  public username: string;
+
+  constructor(username: string, public email: string) {
+    this.username = username
+  }
+
+}
+
+const alwi = new User("alwi", "alwi@asdf.com");
+console.dir(alwi);
+
+
+/** ======= Inheritance ======= */
+
+class Admin extends User {
+  protected read: boolean = true; 
+  protected write: boolean = true; 
+
+  getAccess = () => {
+    return {
+      read: this.read,
+      write: this.write
+    }
+  }
+}
+
+const admin = new Admin("admin 1", "user@admin");
+console.dir({admin});
+const adminAccess = admin.getAccess();
+console.log({adminAccess});
+
+/** ======= Super ======= */
+class Supervisor extends User {
+  constructor(public officeCode: string, username: string, email: string) {
+   super(username, email);
+  }
+}
+
+const sv = new Supervisor("alpha", "uh-supervisor", "user@supervisor");
+console.dir(sv);
+console.log({officeCode: sv.officeCode, username: sv.username});
+
+/** ======= Setter And Getter ======= */
+class Student {
+  private _name: string = "";
+  private _semester: number = 1;
+
+  set name(value: string) {
+    this._name = value;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set semester(value: number) {
+    if (value < 1 || value > 8) {
+      throw new Error("Invalid semester value");
+    }
+    this._semester = value;
+  }
+
+  get semester() {
+    return this._semester;
+  }
+}
+
+try {
+  const student = new Student();
+  student.name = "alwi";
+  // student.semester = 14;
+  console.log({name: student.name, semester: student.semester});
+} catch (error) {
+  console.log((error as Error).message);
+}
